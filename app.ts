@@ -1,2 +1,8 @@
-const nombre = 'Ana'
-console.log(nombre);
+import dotnenv from "dotenv";
+import { Server } from './models/server';
+
+dotnenv.config();
+
+const server = new Server();
+
+server.listen();
