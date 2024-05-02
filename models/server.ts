@@ -1,4 +1,5 @@
 import  express, {Application} from "express";
+import db from '../database/connect'
 import userRoutes from '../routes/usuarios.routers';
 import cors from 'cors';
 
@@ -11,9 +12,23 @@ export class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '8000';
+        this.dbConnect();
         this.middlewares();
         this.routes();
+
     }
+
+    async dbConnect(){
+        try {
+            await db.authenticate();
+            console.log('Database online')
+
+        } catch (error:any) {
+
+            throw new Error(error);
+        }
+    }
+    
 
     middlewares(){
         /// Cross Domain
