@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from '../database/connect';
 
-const Usuario = db.define('usuario',{
+export const Usuario = db.define('usuario',{
 
     nombre:{
         type:DataTypes.STRING
@@ -14,4 +14,7 @@ const Usuario = db.define('usuario',{
     }
 });
 
-export default Usuario;
+(async () => {
+    await Usuario.sync();
+    console.log("Modelo Usuario sincronizado con la base de datos");
+  })();

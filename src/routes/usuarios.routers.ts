@@ -3,7 +3,7 @@ import { getUsuarios, postUsuarios, putUsuario, deleteUsuario} from '../controll
 
 const router = Router();
 
-router.get('/get-usuarios',getUsuarios);
+router.get('/',getUsuarios);
 router.post('/',postUsuarios);
 router.put('/',putUsuario);
 router.delete('/',deleteUsuario);

@@ -1,8 +1,20 @@
 import { Request, Response } from "express";
-import Usuario from "../models/usuario";
+import { Usuario } from "../models/usuario";
+
+///////////////CREATE///////////////
+export const createUsuario = async(req:Request, resp: Response) =>{
+    const usuarios= await Usuario.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt'] } // Excluir 'createdAt' y 'updatedAt'
+      });
+    resp.json(usuarios);
+}
+
+
 
 export const getUsuarios = async(req:Request, resp: Response) =>{
-    const usuarios = await Usuario.findAll();
+    const usuarios= await Usuario.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt'] } // Excluir 'createdAt' y 'updatedAt'
+      });
     resp.json(usuarios);
 }
 export const getUsuario = (req:Request, resp: Response) =>{
