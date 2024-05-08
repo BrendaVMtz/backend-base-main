@@ -1,7 +1,8 @@
 import  express, {Application} from "express";
-import db from '../database/connect'
 import userRoutes from '../routes/usuarios.routers';
 import cors from 'cors';
+
+import db from '../database/connect';
 
 export class Server {
     private app: Application;
@@ -15,20 +16,18 @@ export class Server {
         this.dbConnect();
         this.middlewares();
         this.routes();
-
     }
 
     async dbConnect(){
         try {
             await db.authenticate();
-            console.log('Database online')
+            console.log('Database online');
 
         } catch (error:any) {
 
             throw new Error(error);
         }
     }
-    
 
     middlewares(){
         /// Cross Domain
@@ -47,7 +46,7 @@ export class Server {
     
     listen(){
         this.app.listen(this.port, ()=>{
-            console.log('Escuchando servidor en el puerto:  http://localhost:',this.port);
+            console.log('Escuchando servidor en el puerto: http://localhost:', this.port);
         })
     }
 }
