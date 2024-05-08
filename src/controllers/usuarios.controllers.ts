@@ -3,10 +3,28 @@ import { Usuario } from "../models/usuario";
 
 ///////////////CREATE///////////////
 export const createUsuario = async(req:Request, resp: Response) =>{
-    const usuarios= await Usuario.findAll({
-        attributes: { exclude: ['createdAt', 'updatedAt'] } // Excluir 'createdAt' y 'updatedAt'
-      });
-    resp.json(usuarios);
+    const usuario = req.body;
+    try {
+        // Busca si el usuario ya existe en la base de datos
+        const encontrarUsuario = await Usuario.findOne({
+             where: { email: usuario.email } 
+            });
+        
+        // Si el usuario ya existe, devuelve un error
+        if (encontrarUsuario) {
+            resp.status(409).json({ message: 'El usuario ya existe' });
+            return;
+        }
+
+        // Crea un nuevo usuario en la base de datos
+        const newUsuario = await Usuario.create(usuario);
+
+        // Retorna el nuevo usuario creado
+        resp.status(201).json(newUsuario);
+    } catch (error: any) {
+        // Si hay un error, devuelve un mensaje de error
+        resp.status(500).json({ message: 'Error al crear el usuario', error: error.message });
+    }
 }
 
 
