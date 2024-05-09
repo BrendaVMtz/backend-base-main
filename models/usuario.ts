@@ -31,5 +31,5 @@ export const Usuario = db.define('usuario', {
 (async () => {
     await Usuario.sync();
     console.log("Modelo Usuario sincronizado con la base de datos");
-  })();;
+})();;
 

@@ -4,18 +4,18 @@ import { getUsuarios, getUsuario, postUsuario, putUsuario, deleteUsuario} from '
 const router = Router();
 
 //Crear usuario
-router.post('/',postUsuario);
+router.post('/crear-usuario',postUsuario);
 
 //Obtener usuarios
-router.get('/',getUsuarios);
+router.get('/usuarios',getUsuarios);
 
 //Obtener usuario
-router.get('/:id',getUsuario);
+router.get('/leer-usuario/:id',getUsuario);
 
 //Actualizar 
-router.put('/:id',putUsuario);
+router.put('/actualizar/:id',putUsuario);
 
 //Eliminar
-router.delete('/:id',deleteUsuario);
+router.delete('/eliminar/:id',deleteUsuario);
 
 export default router;

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Usuario from "../models/usuario";
+import {Usuario} from "../models/usuario";
 
 //Crear usuario
 export const postUsuario =  async(req:Request, resp: Response) =>{
