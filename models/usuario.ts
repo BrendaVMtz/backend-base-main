@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from "../database/connect";
 
-const Usuario = db.define('usuario', {
+export const Usuario = db.define('usuario', {
     
     nombre:{
         type: DataTypes.STRING 
@@ -13,6 +13,23 @@ const Usuario = db.define('usuario', {
         type: DataTypes.BOOLEAN
     },
 
-});
+},
 
-export default Usuario;
+{
+    // don't add the timestamp attributes (updatedAt, createdAt)
+  timestamps: false,
+ 
+  // If don't want createdAt
+  createdAt: false,
+ 
+  // If don't want updatedAt
+  updatedAt: false,
+ 
+  // your other configuration here
+});
+ 
+(async () => {
+    await Usuario.sync();
+    console.log("Modelo Usuario sincronizado con la base de datos");
+  })();;
+
