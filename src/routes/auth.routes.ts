@@ -1,10 +1,10 @@
 import {Router} from 'express';
 import {
   loginHandler,
-  // profileHandler,
+  profileHandler,
   // signupHandler,
 } from "../controllers/auth.controller";
-// import { requireAuth } from "../middlewares/requireAuth";
+import { requireAuth } from "../middlewares/requireAuth";
 // import { validateSchema } from "../middlewares/validateSchema";
 // import { loginSchema, signupSchema } from "../schemas/user.schema";
 
@@ -14,6 +14,6 @@ const router = Router();
 
 router.post('/login', loginHandler);
 
-// router.get("/profile", requireAuth, profileHandler);
+router.get("/profile", requireAuth, profileHandler);
 
 export default router;

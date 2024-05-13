@@ -1,3 +1,4 @@
+import { profile } from "console";
 import { Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 // import User from "../models/User";
@@ -60,7 +61,7 @@ export const loginHandler = async (
     {
       test:"test"
       // _id: userFound._id,
-    }, 'secret',
+    }, 'miracleWorksSecretWord',
     // JWT_SECRET,
     {
       expiresIn: 60 * 60 * 24, // 24 hours
@@ -72,9 +73,12 @@ export const loginHandler = async (
   });
 };
 
-// export const profileHandler = async (req: Request, res: Response) => {
-//   const userProfile = await User.findOne({ _id: req.user._id }).select(
-//     "-password"
-//   );
-//   return res.json(userProfile);
-// };
+export const profileHandler = async (req: Request, res: Response) => {
+  // const userProfile = await User.findOne({ _id: req.user._id }).select(
+  //   "-password"
+  // );
+  // return res.json(userProfile);
+  return res.json({
+    profile: req.user,
+    message:"e ola"})
+};
