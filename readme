@@ -1,6 +1,16 @@
-###Instalar dependencias
-"npm install"
-###configurar conexion a la DB 
+## Instalar dependencias
+
+```bash
+npm install
+```
+
+## Configurar conexion a la DB 
+
 Modificar el archivo connection.ts ubicado en src/database/database
-###Correr el proyecto
- usar comando "npm run dev"
+
+## Correr el proyecto
+
+```bash
+ npm run dev
+
+```
