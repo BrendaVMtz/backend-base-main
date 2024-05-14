@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {Usuario} from "../models/usuario";
+import jwt from 'jsonwebtoken';
 
 //Crear usuario
 export const postUsuario =  async(req:Request, resp: Response) =>{
@@ -28,6 +29,15 @@ export const postUsuario =  async(req:Request, resp: Response) =>{
         resp.status(200).json({  
             message: 'El registro se agrego correctamente'
         });      
+
+        //Guardar usuario
+        const savedUser = await nuevoUsuario.save();
+       
+        //TOKEN 
+        /* const token: string = jwt.sign({ _id: savedUser._id }, process.env['TOKEN_SECRET'] || '', {
+            expiresIn: 60 * 60 * 24
+        });
+        resp.header('auth-token', token).json(savedUser); */
 
     } catch (error) {
         //Si hay un error, devuelve el mensaje de error
@@ -83,6 +93,7 @@ export const putUsuario = async(req:Request, resp: Response) =>{
         await usuario.update(body);
         // Retorna el usuario modificado
         resp.json(usuario);
+
 
     } catch (error: any) {
         // Si hay un error, devuelve un mensaje de error
