@@ -1,5 +1,7 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction} from "express";
+import jwt from 'jsonwebtoken';
 import {Usuario} from "../models/usuario";
+
 
 //Crear usuario
 export const postUsuario =  async(req:Request, resp: Response) =>{
@@ -20,14 +22,35 @@ export const postUsuario =  async(req:Request, resp: Response) =>{
         } 
 
         //Crea un nuevo usuario en la base de datos
-        const nuevoUsuario = await Usuario.create(usuario);
+        //const nuevoUsuario = await Usuario.create(usuario);
+         
+        const nuevoUsuario = {
+            nombre: req.body.nombre,
+            email: req.body.email,
+            estado: req.body.estado
+        } 
+        /*
+        const nuevoUsuario = {
+            id: 10,
+            nombre: 'Elizabeth',
+            email: 'elizabeth.ruiz@gmail.com',
+            estado: 1
+        }*/
         
         // Retorna el nuevo usuario creado
         resp.status(201).json(nuevoUsuario);
        
         resp.status(200).json({  
             message: 'El registro se agrego correctamente'
-        });      
+        });  
+
+        //Crear TOKEN
+        jwt.sign({nuevoUsuario}, 'secretkey', { expiresIn: '1h'}, (err: any, token: any) => {
+    
+            resp.json({  
+                token
+            }); 
+        });
 
     } catch (error) {
         //Si hay un error, devuelve el mensaje de error
@@ -36,6 +59,42 @@ export const postUsuario =  async(req:Request, resp: Response) =>{
             message: 'Error al crear el usuario'
         });
     }
+}
+
+//Devuelve la informacion del usuario
+export const postsUsuario = (req:Request, resp: Response) => {
+    
+    jwt.verify(req.token, 'secretkey', (error: any, authData: any) => {
+        if (error) {
+            resp.status(403).json({  
+                message: 'No hay acceso'
+            });       //403 ruta o acceso prohibido
+        }else{
+            resp.json({  
+                message:`Post fue creado`,
+                authData: authData
+            }); 
+        }        
+    });
+}
+
+//Authorization: Bearer <token>
+//Verificar que realmente el usuario este enviando un token 
+function verifyToken(req: Request, resp: Response, next: NextFunction) {
+    
+    const bearerHeader = req.headers['authorization'];
+
+    //verificar que el token existe 
+    if(typeof bearerHeader !== 'undefined'){
+        //dividir siempre y cuando exista un espacio
+        const bearerToken = bearerHeader.split(" ")[1] //1 para tener acceso al token
+        req.token = bearerToken; 
+        next();
+    }else{
+        resp.status(403).json({  
+            message: 'No hay acceso'
+        });       //403 ruta o acceso prohibido
+    }  
 }
 
 //Obtener todos los usuarios
