@@ -1,8 +1,9 @@
 
 
-// const jwt = require('jwt')
-// const moment = require('moment')
+const jwt = require("jsonwebtoken");
+const express = require("express");
 
+const app = express();
 
 // function isAuth (req, res, next){
 //     if(!req.headers.authorization){
@@ -15,11 +16,13 @@
 //     //const payload = jwt.decode(token, )
 // }
 
+/* 
+
 import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
 // Secreto para firmar los tokens JWT (debe ser una cadena segura)
-const secretKey = 'mi_secreto_super_seguro';
+const secretKey = 'mi_token_secreto';
 
 // Función para generar un token JWT
 function generateToken(payload: any): string {
@@ -39,7 +42,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
             return res.status(401).json({ message: 'Token inválido' });
         }
         // Si el token es válido, decodificado contendrá la carga útil del token
-        //req['user'] = decoded;
+        req['user'] = decoded;
         next(); // Continuar con el siguiente middleware
     });
 }
@@ -54,4 +57,5 @@ app.get('/ruta-protegida', verifyToken, (req, res) => {
 // Ejemplo de generación de token
 const token = generateToken({ userId: 123 });
 
-console.log('Token JWT generado:', token);
+//JWT - JSON WEB TOKEN
+console.log('Token JWT generado:', token); */

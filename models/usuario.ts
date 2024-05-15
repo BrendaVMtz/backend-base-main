@@ -12,6 +12,12 @@ export const Usuario = db.define('usuario', {
     estado:{
         type: DataTypes.BOOLEAN
     },
+    /* password:{
+        type: DataTypes.STRING
+    },
+    encrypPassword:{
+        type: DataTypes.STRING
+    } */
 
 },
 

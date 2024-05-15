@@ -1,27 +1,26 @@
 import { Request, Response } from "express";
 import {Usuario} from "../models/usuario";
-import jwt from 'jsonwebtoken';
 
 //Crear usuario
 export const postUsuario =  async(req:Request, resp: Response) =>{
-    const{body} = req;
+    const usuario = req.body;
 
     try {
         //Busca si existe el email en la base de datos 
         const existeEmail = await Usuario.findOne({
-            where:{ email: body.email }
+            where:{ email: usuario.email }
         });
 
         //Si el email ya existe, devuelve un error
         if(existeEmail) {
             //409 conflict
             return resp.status(409).json({
-                message:'Ya existe un usuario con el email ' + body.email
+                message:'Ya existe un usuario con el email ' + usuario.email
             });
         } 
 
         //Crea un nuevo usuario en la base de datos
-        const nuevoUsuario = await Usuario.create(body);
+        const nuevoUsuario = await Usuario.create(usuario);
         
         // Retorna el nuevo usuario creado
         resp.status(201).json(nuevoUsuario);
@@ -29,15 +28,6 @@ export const postUsuario =  async(req:Request, resp: Response) =>{
         resp.status(200).json({  
             message: 'El registro se agrego correctamente'
         });      
-
-        //Guardar usuario
-        const savedUser = await nuevoUsuario.save();
-       
-        //TOKEN 
-        /* const token: string = jwt.sign({ _id: savedUser._id }, process.env['TOKEN_SECRET'] || '', {
-            expiresIn: 60 * 60 * 24
-        });
-        resp.header('auth-token', token).json(savedUser); */
 
     } catch (error) {
         //Si hay un error, devuelve el mensaje de error
@@ -102,7 +92,7 @@ export const putUsuario = async(req:Request, resp: Response) =>{
         });
     }
 }
-
+//Eliminar usuario
 export const deleteUsuario = async(req:Request, resp: Response) =>{
 
     const{id} = req.params;
@@ -131,58 +121,3 @@ export const deleteUsuario = async(req:Request, resp: Response) =>{
     }
 }
 
-
-
-//OBTENER TODOS LOS USUARIOS
-/* export const getUsuarios = (req:Request, resp: Response) =>{
-    
-    resp.json({
-        message:'getUsuarios'
-    })
-} */
-
-//OBTENER UN USUARIO
-/* export const getUsuario = (req:Request, resp: Response) =>{
-    
-    const{id}= req.params;
-
-    resp.json({
-        message:'getUsuario',
-        id
-    })
-} */
-
-//CREAR UN USUARIO
-/* export const postUsuario = (req:Request, resp: Response) =>{
-    
-    const{body}= req;
-
-    resp.json({
-        message:'postUsuario',
-        body
-    })
-} */
-
-//ACTUALIZAR UN USUARIO
-/* export const putUsuario = (req:Request, resp: Response) =>{
-    
-    const{id}= req.params;
-    const{body}= req;
-    
-    resp.json({
-        message:'putUsuario',
-        body,
-        id
-    })
-} */
-
-//ELIMINAR UN USUARIO
-/* export const deleteUsuario = (req:Request, resp: Response) =>{
-    
-    const{id}= req.params;
-    
-    resp.json({
-        message:'deleteUsuario',
-        id
-    })
-} */
