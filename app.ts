@@ -7,13 +7,12 @@ const server = new Server();
 
 server.listen(); */
 
-import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import usersRouter from "./routes/usuarios.routers";
 import dbConnection from "./database/connect";
 
-dotenv.config();
+
 const app = express();
 
 //middlewares
