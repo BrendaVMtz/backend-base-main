@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction} from "express";
-import jwt from 'jsonwebtoken';
+//import jwt from 'jsonwebtoken';
 import {Usuario} from "../models/usuario";
 
 
@@ -22,14 +22,14 @@ export const postUsuario =  async(req:Request, resp: Response) =>{
         } 
 
         //Crea un nuevo usuario en la base de datos
-        //const nuevoUsuario = await Usuario.create(usuario);
-         
+        const nuevoUsuario = await Usuario.create(usuario);
+        /* 
         const nuevoUsuario = {
             nombre: req.body.nombre,
             email: req.body.email,
             estado: req.body.estado
         } 
-        /*
+        
         const nuevoUsuario = {
             id: 10,
             nombre: 'Elizabeth',
@@ -45,24 +45,24 @@ export const postUsuario =  async(req:Request, resp: Response) =>{
         });  
 
         //Crear TOKEN
-        jwt.sign({nuevoUsuario}, 'secretkey', { expiresIn: '1h'}, (err: any, token: any) => {
+        /* jwt.sign({nuevoUsuario}, 'secretkey', { expiresIn: '1h'}, (err: any, token: any) => {
     
             resp.json({  
                 token
             }); 
-        });
+        }); */
 
-    } catch (error) {
+    } catch (error: any) {
         //Si hay un error, devuelve el mensaje de error
         //500 Internal Server Error 
         resp.status(500).json({  
-            message: 'Error al crear el usuario'
+            message: 'Error al crear el usuario', error: error.message
         });
     }
 }
 
 //Devuelve la informacion del usuario
-export const postsUsuario = (req:Request, resp: Response) => {
+/* export const postsUsuario = (req:Request, resp: Response) => {
     
     jwt.verify(req.token, 'secretkey', (error: any, authData: any) => {
         if (error) {
@@ -76,7 +76,7 @@ export const postsUsuario = (req:Request, resp: Response) => {
             }); 
         }        
     });
-}
+} 
 
 //Authorization: Bearer <token>
 //Verificar que realmente el usuario este enviando un token 
@@ -95,7 +95,7 @@ function verifyToken(req: Request, resp: Response, next: NextFunction) {
             message: 'No hay acceso'
         });       //403 ruta o acceso prohibido
     }  
-}
+}*/
 
 //Obtener todos los usuarios
 export const getUsuarios = async(req:Request, resp: Response) =>{
@@ -108,19 +108,25 @@ export const getUsuarios = async(req:Request, resp: Response) =>{
 export const getUsuario = async(req:Request, resp: Response) =>{
 
     const{id}= req.params;
-    
-    //Busca si existe al usuario a traves del ID 
-    const usuario = await Usuario.findByPk(id);
-    //Si ek usuario existe, devuelve el usuario
-    if(usuario) {
-        resp.json(usuario); 
-    }else {
-        //Si no encuentra al usuario, devuelve un mensaje 
-        //404 Not found
-        resp.status(404).json({
-            message:`No existe el usuario con el id ${id}` 
-        }); 
-    }    
+    try{  
+        //Busca si existe al usuario a traves del ID 
+        const usuario = await Usuario.findByPk(id);
+        //Si ek usuario existe, devuelve el usuario
+        if(usuario) {
+            resp.json(usuario); 
+        }else {
+            //Si no encuentra al usuario, devuelve un mensaje 
+            //404 Not found
+            resp.status(404).json({
+                message:`No existe el usuario con el id ${id}` 
+            }); 
+        }  
+    } catch (error: any) {
+        // Si hay un error, devuelve un mensaje de error
+        resp.status(500).json({ 
+            message: 'Error al leer usuarios' 
+        });
+    }  
 }
 
 //Actualizar usuario
@@ -143,14 +149,14 @@ export const putUsuario = async(req:Request, resp: Response) =>{
         // Retorna el usuario modificado
         resp.json(usuario);
 
-
     } catch (error: any) {
         // Si hay un error, devuelve un mensaje de error
         resp.status(500).json({ 
-            message: 'Error al modificar el usuario' 
+            message: 'Error al modificar el usuario', error:  error.message
         });
     }
 }
+
 //Eliminar usuario
 export const deleteUsuario = async(req:Request, resp: Response) =>{
 

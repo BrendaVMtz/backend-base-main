@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { login, profile } from '../controllers/auth.controller'
+import { loginController,  profileController } from '../controllers/auth.controller'
+import { auth } from "../middlewares/auth";
 
 const authRouter = Router();
 
 //Crear usuario
-authRouter.post('/api/login',login);
+authRouter.post('/login', loginController);
 
 //Obtener usuarios
-authRouter.get('/api',profile);
+authRouter.get('/profile', auth, profileController);
 
 export default authRouter;

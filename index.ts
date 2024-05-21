@@ -39,8 +39,10 @@ app.post("/api/login", (req:Request, res: Response) => {
 
 //Devuelve la informacion del usuario
 app.post("/api/posts", verifyToken, (req, res) => {
-    
-    jwt.verify(req.token, 'secretkey', (error: any, authData: any) => {
+
+    const token = req.body
+    //req.token - token
+    jwt.verify(token, 'secretkey', (error: any, authData: any) => {
         if (error) {
             res.status(403).json({  
                 message: 'No hay acceso'
@@ -64,7 +66,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     if(typeof bearerHeader !== 'undefined'){
         //dividir siempre y cuando exista un espacio
         const bearerToken = bearerHeader.split(" ")[1] //1 para tener acceso al token
-        req.token = bearerToken; 
+        //req.token = bearerToken; 
         next();
     }else{
         res.status(403).json({  

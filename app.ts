@@ -10,6 +10,7 @@ server.listen(); */
 import express from "express";
 import cors from "cors";
 import usersRouter from "./routes/usuarios.routers";
+import authRouter from "./routes/auth.routes";
 import dbConnection from "./database/connect";
 
 
@@ -29,10 +30,11 @@ const PORT = 3000;
         console.error("Unable to connect to the database:", error);
     }
 
-    //routes
+    //Routes
     app.use('/api', usersRouter); // el enrutamiento que van a tener tus peticiones
+    app.use('/api/auth', authRouter);
 
-    //port
+    //Port
     app.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
     });
