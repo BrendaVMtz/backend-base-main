@@ -9,9 +9,9 @@ server.listen(); */
 
 import express from "express";
 import cors from "cors";
-import usersRouter from "./routes/usuarios.routers";
-import authRouter from "./routes/auth.routes";
-import dbConnection from "./database/connect";
+import usersRouter from "./src/routes/usuarios.routers";
+import authRouter from "./src/routes/auth.routes";
+import dbConnection from "./src/database/connect";
 
 
 const app = express();
