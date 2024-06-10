@@ -1,23 +1,27 @@
 import { DataTypes } from "sequelize";
 import db from '../database/connect';
 
-export const Usuario = db.define('usuario',{
+export const Transaccion = db.define('transaccion',{
 
-    nombre:{
-        type:DataTypes.STRING,
+    balance_fecha:{
+        type:DataTypes.INTEGER,
         allowNull: false
     },
-    email:{
+    usuario_id:{
+        type:DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_cuenta_debe:{
         type:DataTypes.STRING,
         allowNull: false,
         unique: true
     },
-    contrasena:{
+    id_cuenta_haber:{
         type:DataTypes.STRING,
         allowNull: false
     }
     ,
-    estado:{
+    cantidad:{
         type:DataTypes.BOOLEAN,
         allowNull: false 
     }
@@ -35,13 +39,13 @@ export const Usuario = db.define('usuario',{
   // your other configuration here
 });
 
-Usuario.beforeCreate((user: any) => {
+Transaccion.beforeCreate((user: any) => {
     user.nombre = user.nombre.trim();
     user.email = user.email.trim();
   });
 
 // Sincronizar con la base de datos
 (async () => {
-    await Usuario.sync();
-    console.log("Modelo Usuario sincronizado con la base de datos");
+    await Transaccion.sync();
+    console.log("Modelo Transaccion sincronizado con la base de datos");
   })();
