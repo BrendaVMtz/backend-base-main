@@ -23,7 +23,7 @@ router.put("/transactions/:id", requireAuth, updateTransaction);
 
 router.delete("/transactions/:id", requireAuth, deleteTransaction);
 
-router.get("/cuentas", getAccounts, deleteTransaction);
+router.get("/cuentas", getAccounts);
 
 //router.get("/cuenta/:id", requireAuth, getTransaction);
 

@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from '../database/connect';
 
-export const Cuenta = db.define('cuenta',{
+export const Cuentas = db.define('cuentas',{
 
     nombre:{
         type:DataTypes.STRING,
@@ -21,6 +21,6 @@ export const Cuenta = db.define('cuenta',{
 
 // Sincronizar con la base de datos
 (async () => {
-    await Cuenta.sync();
+    await Cuentas.sync();
     console.log("Modelo Cuenta sincronizado con la base de datos");
   })();

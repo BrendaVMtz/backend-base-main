@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { Cuenta } from "../models/cuenta";
+import { Cuentas } from "../models/cuenta";
 
 export const getAccounts = async(req:Request, res: Response) => {
-    const cuentas = await Cuenta.findAll();
+    const cuentas = await Cuentas.findAll();
     res.json(cuentas);
 };
 export const createAccount = async(req:Request, res: Response) => {};
