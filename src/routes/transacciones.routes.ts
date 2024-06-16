@@ -6,11 +6,10 @@ import {
   updateTransaction,
   deleteTransaction
 } from "../controllers/transacciones.controller";
-// import {
-//   getAccounts,
-//   getAccount
-// } from "../controllers/cuentas.controller";
 import { authRequired } from "../middlewares/validateToken";
+import { validateSchema } from "../middlewares/validateSchema";
+import { createTransactionSchema } from "../schemas/transaction.schema";
+
 
 const router = Router();
 //////////Transacciones
@@ -19,10 +18,10 @@ router.get("/", authRequired, getTransactions);
 router.get("/:id", authRequired, getTransaction);
 
 //Create 
-router.post("/", authRequired, createTransaction);
+router.post("/", authRequired,validateSchema(createTransactionSchema) ,createTransaction);
 
 //Update
-router.put("/:id", authRequired, updateTransaction);
+router.put("/:id", authRequired,validateSchema(createTransactionSchema) , updateTransaction);
 
 router.delete("/:id", authRequired, deleteTransaction);
 

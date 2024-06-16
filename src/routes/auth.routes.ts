@@ -6,14 +6,14 @@ import {
   logoutHandler
 } from "../controllers/auth.controller";
 import { authRequired } from "../middlewares/validateToken";
-//import { validateSchema } from "../middlewares/validateSchema";
-//import { loginSchema, signupSchema } from "../schemas/user.schema";
+import { validateSchema } from "../middlewares/validateSchema";
+import { loginSchema, registerSchema } from "../schemas/user.schema";
 
 const router = Router();
 
-router.post("/register", /*validateSchema(signupSchema),*/ signupHandler);
+router.post("/register", validateSchema(registerSchema), signupHandler);
 
-router.post('/login', loginHandler);
+router.post('/login', validateSchema(loginSchema), loginHandler);
 
 router.post('/logout', logoutHandler);
 
