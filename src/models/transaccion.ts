@@ -1,28 +1,31 @@
 import { DataTypes } from "sequelize";
 import db from '../database/connect';
+import {Usuario} from './usuario';
 
-export const Transaccion = db.define('transaccion',{
+export const Transaccion = db.define('transacciones',{
 
-    balance_fecha:{
-        type:DataTypes.INTEGER,
-        allowNull: false
-    },
     usuario_id:{
         type:DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Usuario // Referencia al modelo User
+        }
+    },
+    balance_fecha: {
+        type:DataTypes.DATEONLY,
         allowNull: false
     },
     id_cuenta_debe:{
-        type:DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        type:DataTypes.INTEGER,
+        allowNull: false
     },
     id_cuenta_haber:{
-        type:DataTypes.STRING,
+        type:DataTypes.INTEGER,
         allowNull: false
     }
     ,
     cantidad:{
-        type:DataTypes.BOOLEAN,
+        type:DataTypes.INTEGER,
         allowNull: false 
     }
 },
@@ -37,12 +40,12 @@ export const Transaccion = db.define('transaccion',{
   updatedAt: false,
 
   // your other configuration here
-});
+}
+);
 
-Transaccion.beforeCreate((user: any) => {
-    user.nombre = user.nombre.trim();
-    user.email = user.email.trim();
-  });
+Transaccion.belongsTo(Usuario, {foreignKey:'usuario_id'});
+
+
 
 // Sincronizar con la base de datos
 (async () => {

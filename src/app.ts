@@ -3,6 +3,7 @@ import cors from "cors";
 import usersRouter from "./routes/usuarios.routes";
 import authRoutes from './routes/auth.routes'
 import transactionRoutes from './routes/transacciones.routes'
+import accountRoutes from './routes/account.routes' 
 import dbConnection from "./database/connect";
 import morgan from "morgan";
 import { PORT } from "./config";
@@ -28,8 +29,9 @@ app.use(cors()); // las referencias cruzadas
     
     // Routes
     app.use("/api/auth", authRoutes);
-    app.use("/api/transaction", transactionRoutes);
-    app.use('/api', usersRouter); // el enrutamiento que van a tener tus peticiones
+    app.use("/api/transactions", transactionRoutes);
+    app.use("/api/accounts", accountRoutes);
+    app.use('/api/test', usersRouter); // el enrutamiento que van a tener tus peticiones
 
     app.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
