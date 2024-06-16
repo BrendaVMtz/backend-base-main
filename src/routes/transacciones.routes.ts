@@ -6,26 +6,30 @@ import {
   updateTransaction,
   deleteTransaction
 } from "../controllers/transacciones.controller";
-import {
-  getAccounts
-} from "../controllers/cuentas.controller";
-import { requireAuth } from "../middlewares/requireAuth";
+// import {
+//   getAccounts,
+//   getAccount
+// } from "../controllers/cuentas.controller";
+import { authRequired } from "../middlewares/validateToken";
 
 const router = Router();
+//////////Transacciones
+//Get transactions
+router.get("/", authRequired, getTransactions);
+router.get("/:id", authRequired, getTransaction);
 
-router.get("/", requireAuth, getTransactions);
+//Create 
+router.post("/", authRequired, createTransaction);
 
-router.post("/transactions", requireAuth, createTransaction);
+//Update
+router.put("/:id", authRequired, updateTransaction);
 
-router.get("/transactions/:id", requireAuth, getTransaction);
+router.delete("/:id", authRequired, deleteTransaction);
 
-router.put("/transactions/:id", requireAuth, updateTransaction);
+// /////////Cuentas
+// router.get("/cuentas/",authRequired, getAccounts);
 
-router.delete("/transactions/:id", requireAuth, deleteTransaction);
-
-router.get("/cuentas", getAccounts);
-
-//router.get("/cuenta/:id", requireAuth, getTransaction);
+// router.get("/cuentas/:id", authRequired, getAccount);
 
 
 export default router;
