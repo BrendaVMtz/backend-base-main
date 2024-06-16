@@ -14,7 +14,9 @@ app.use(morgan('dev'));
 
 app.use(express.json());  // la comunicacion entre servidor y cliente es con JSON
 app.use(cookieParser()); //extraer cookies de la peticion
-app.use(cors()); // las referencias cruzadas
+app.use(cors({
+    origin: 'http://localhost:5173',
+})); // las referencias cruzadas
 
 
 //const PORT = 3000;
