@@ -3,7 +3,8 @@ import {
   loginHandler,
   profileHandler,
   signupHandler,
-  logoutHandler
+  logoutHandler,
+  verifyToken
 } from "../controllers/auth.controller";
 import { authRequired } from "../middlewares/validateToken";
 import { validateSchema } from "../middlewares/validateSchema";
@@ -18,5 +19,7 @@ router.post('/login', validateSchema(loginSchema), loginHandler);
 router.post('/logout', logoutHandler);
 
 router.get("/profile", authRequired, profileHandler);
+
+router.get("/verify-token", verifyToken);
 
 export default router;

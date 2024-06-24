@@ -16,6 +16,7 @@ app.use(express.json());  // la comunicacion entre servidor y cliente es con JSO
 app.use(cookieParser()); //extraer cookies de la peticion
 app.use(cors({
     origin: 'http://localhost:5173',
+    credentials: true
 })); // las referencias cruzadas
 
 
