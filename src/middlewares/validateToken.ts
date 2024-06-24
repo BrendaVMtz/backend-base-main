@@ -4,15 +4,18 @@ import { TOKEN_SECRET } from "../config";
 
 export const authRequired = (req: Request, res: Response, next: NextFunction) => {
     // try {
-        const { token } = req.cookies;
-        //console.log(token);
+    // console.log(req.headers.authorization);
+        const  token: any  = req.headers.authorization?.split('Bearer ');
+        const authChain = token[1];
+        console.log(authChain);
+        
 
-        if (!token)
+        if (!authChain)
            return res
              .status(401)
              .json({ message: "No token, authorization denied" });
 
-        jwt.verify(token, TOKEN_SECRET, (err: jwt.VerifyErrors | null, user: string | jwt.JwtPayload | undefined) => {
+        jwt.verify(authChain, TOKEN_SECRET, (err: jwt.VerifyErrors | null, user: string | jwt.JwtPayload | undefined) => {
            if (err) 
             return res
              .status(403)

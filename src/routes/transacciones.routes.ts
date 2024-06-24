@@ -9,21 +9,22 @@ import {
 import { authRequired } from "../middlewares/validateToken";
 import { validateSchema } from "../middlewares/validateSchema";
 import { createTransactionSchema } from "../schemas/transaction.schema";
+import { requireAuth } from "../middlewares/requireAuth";
 
 
 const router = Router();
 //////////Transacciones
 //Get transactions
-router.get("/", authRequired, getTransactions);
-router.get("/:id", authRequired, getTransaction);
+router.get("/", requireAuth, getTransactions);
+// router.get("/:id", authRequired, getTransaction);
 
-//Create 
-router.post("/", authRequired,validateSchema(createTransactionSchema) ,createTransaction);
+// //Create 
+// router.post("/", authRequired,validateSchema(createTransactionSchema) ,createTransaction);
 
-//Update
-router.put("/:id", authRequired,validateSchema(createTransactionSchema) , updateTransaction);
+// //Update
+// router.put("/:id", authRequired,validateSchema(createTransactionSchema) , updateTransaction);
 
-router.delete("/:id", authRequired, deleteTransaction);
+// router.delete("/:id", authRequired, deleteTransaction);
 
 // /////////Cuentas
 // router.get("/cuentas/",authRequired, getAccounts);

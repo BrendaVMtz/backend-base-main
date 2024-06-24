@@ -18,7 +18,7 @@ router.post('/login', validateSchema(loginSchema), loginHandler);
 
 router.post('/logout', logoutHandler);
 
-router.get("/profile", authRequired, profileHandler);
+router.get("/profile", verifyToken);
 
 router.get("/verify-token", verifyToken);
 
