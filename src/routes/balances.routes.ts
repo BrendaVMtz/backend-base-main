@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/validateToken";
-import { createBalance, getBalances } from "../controllers/balances.controller";
+import { createBalance, getBalance, getBalances, getTransactionsByBalance } from "../controllers/balances.controller";
 
 
 const router = Router();
@@ -8,9 +8,12 @@ const router = Router();
 router.post('/crear-balance',authRequired,createBalance);
 //Read
 router.get('/leer-balances',authRequired, getBalances);
+router.get('/leer-balance/:id',authRequired, getBalance);
+
+router.get('/leer-transactionsByBalance/:id',authRequired, getTransactionsByBalance);
+
 
 // router.get('/',authRequired,getBalances);
-// router.get('/leer-balance/:id',);
 // //Update
 // router.put('/modificar-balance/:id',);
 // //Delete

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Balance } from "../models/balance";
 import { Usuario } from "../models/usuario";
+import { Transaccion } from "../models/transaccion";
 
 const getUserId = async (email: String) => {
   try {
@@ -20,8 +21,8 @@ const getUserId = async (email: String) => {
 export const createBalance = async (req: Request, res: Response) => {
   // console.log(req.user);
   try {
-      // console.log(email);
-      // console.log(UserId);
+    // console.log(email);
+    // console.log(UserId);
     const { email } = req.user;
     const UserId = await getUserId(email);
     //Si no encuentra el usuario, manda un error
@@ -39,10 +40,10 @@ export const createBalance = async (req: Request, res: Response) => {
       anio,
       mes,
     });
-    res.status(201).json(newBalance);
+    return res.status(201).json(newBalance);
   } catch (error: any) {
     // Si hay un error, devuelve un mensaje de error
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error al crear el nuevo balance",
       error: error.message,
     });
@@ -51,64 +52,81 @@ export const createBalance = async (req: Request, res: Response) => {
 
 ///READ
 export const getBalances = async (req: Request, res: Response) => {
-  // console.log(req.user);
+  console.log(req.user);
   try {
-    const {email} = req.user;
+    const { email } = req.user;
     const UserId = await getUserId(email);
     if (!UserId)
-        return res
-          .status(500)
-          .json({ error: "Internal Server Error, cannot find user" });
+      return res
+        .status(500)
+        .json({ error: "Internal Server Error, cannot find user" });
 
     const balances = await Balance.findAll({
-        where: {usuario_id: UserId}
+      where: { usuario_id: UserId },
     });
-    res.status(200).json(balances);
-
+    
+    return res.status(200).json(balances);
   } catch (error: any) {
-    res
+    return res
       .status(500)
       .json({ message: "Error al obtener los balances", error: error.message });
   }
 };
 
-// export const getBalance = async (req: Request, res: Response) => {
-//     const{id}= req.params;
-//     try {
-//         // Busca si la transaccion existe en la base de datos
-//         const transaccion = await Transaccion.findByPk(id)
-//         // Si la transaccion existe, devuelve la transaccion
-//         if (transaccion) {
-//             res.json(transaccion);
-//         } else {
-//             // Si no se encuentra la Transaccion, devuelve un mensaje de error
-//             res.status(404).json({ message: 'Transaccion no encontrada' });
-//         }
-//     } catch (error: any) {
+export const getBalance = async (req: Request, res: Response) => {
+  // console.log(req.user)
+  try {
+    const { email } = req.user;
+    const{id}= req.params; 
+    const UserId = await getUserId(email);
+    if (!UserId)
+      return res
+        .status(403)
+        .json({ error: "Usuario no autorizado" });
+    const balances = await Balance.findOne({
+      where: { usuario_id: UserId ,
+        id: id
+      },
+    });
+    res.status(200).json(balances);
+    return;
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ message: "Error al obtener el balance", error: error.message });
+  }
+};
 
-//     }
-// };
-// export const updateBalance = async (req: Request, res: Response) => {
-//     const {id}= req.params;
-//     const newData = req.body;
+////Leer lista de transacciones por balance
+export const getTransactionsByBalance = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.user;
+    const{id}= req.params; 
+    const UserId = await getUserId(email);
+    if (!UserId)
+      return res
+        .status(403)
+        .json({ error: "Usuario no autorizado" });
+    const balance = await Balance.findOne({
+      where: { usuario_id: UserId ,
+        id: id
+      },
+    });
 
-//     try {
-//         // Busca la trasaccion por su ID en la base de datos
-//         const transaccion = await Transaccion.findByPk(id);
-//         // Si la transaccion no se encuentra, devuelve un mensaje de error
-//         if (!transaccion) {
-//             res.status(404).json({ message: 'transaccion no encontrada' });
-//             return;
-//         }
-//         // Actualiza el transaccion con los nuevos datos
-//         await transaccion.update(newData);
-//         // Retorna el transaccion modificado
-//         res.json(transaccion);
-//     } catch (error: any) {
-//         // Si hay un error, devuelve un mensaje de error
-//         res.status(500).json({ message: 'Error al modificar la transaccion', error: error.message });
-//     }
-// };
+    const balance_id = balance?.dataValues.id
+    const transacciones = await Transaccion.findAll({
+      where: {
+        balance_id: balance_id
+      }
+    })
+
+    return res.status(200).json(transacciones);
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ message: "Error al obtener las transacciones", error: error.message });
+  }
+}
 // export const deleteBalance = async (req: Request, res: Response) => {
 //     const{id}= req.params;
 //     try {
