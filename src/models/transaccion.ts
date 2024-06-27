@@ -2,10 +2,9 @@ import { DataTypes } from "sequelize";
 import db from '../database/connect';
 import {Usuario} from './usuario';
 import { Balance } from "./balance";
+import { Cuenta } from "./cuenta";
 
 export const Transaccion = db.define('transacciones',{
-
-    
     balance_id: {
         type:DataTypes.INTEGER,
         allowNull: false,
@@ -15,11 +14,17 @@ export const Transaccion = db.define('transacciones',{
     },
     id_cuenta_debe:{
         type:DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Cuenta
+        }
     },
     id_cuenta_haber:{
         type:DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Cuenta
+        }
     }
     ,
     cantidad:{

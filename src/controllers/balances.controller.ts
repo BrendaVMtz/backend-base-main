@@ -64,7 +64,7 @@ export const getBalances = async (req: Request, res: Response) => {
     const balances = await Balance.findAll({
       where: { usuario_id: UserId },
     });
-    
+
     return res.status(200).json(balances);
   } catch (error: any) {
     return res
@@ -77,16 +77,12 @@ export const getBalance = async (req: Request, res: Response) => {
   // console.log(req.user)
   try {
     const { email } = req.user;
-    const{id}= req.params; 
+    const { id } = req.params;
     const UserId = await getUserId(email);
     if (!UserId)
-      return res
-        .status(403)
-        .json({ error: "Usuario no autorizado" });
+      return res.status(403).json({ error: "Usuario no autorizado" });
     const balances = await Balance.findOne({
-      where: { usuario_id: UserId ,
-        id: id
-      },
+      where: { usuario_id: UserId, id: id },
     });
     res.status(200).json(balances);
     return;
@@ -101,32 +97,33 @@ export const getBalance = async (req: Request, res: Response) => {
 export const getTransactionsByBalance = async (req: Request, res: Response) => {
   try {
     const { email } = req.user;
-    const{id}= req.params; 
+    const { id } = req.params;
     const UserId = await getUserId(email);
     if (!UserId)
-      return res
-        .status(403)
-        .json({ error: "Usuario no autorizado" });
+      return res.status(403).json({ error: "Usuario no autorizado" });
     const balance = await Balance.findOne({
-      where: { usuario_id: UserId ,
-        id: id
-      },
+      where: { usuario_id: UserId, id: id },
     });
 
-    const balance_id = balance?.dataValues.id
+    const balance_id = balance?.dataValues.id;
     const transacciones = await Transaccion.findAll({
       where: {
-        balance_id: balance_id
-      }
-    })
+        balance_id: balance_id,
+      },
+    });
 
     return res.status(200).json(transacciones);
   } catch (error: any) {
     return res
       .status(500)
-      .json({ message: "Error al obtener las transacciones", error: error.message });
+      .json({
+        message: "Error al obtener las transacciones",
+        error: error.message,
+      });
   }
-}
+};
+
+
 // export const deleteBalance = async (req: Request, res: Response) => {
 //     const{id}= req.params;
 //     try {

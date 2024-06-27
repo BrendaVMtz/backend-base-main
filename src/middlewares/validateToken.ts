@@ -7,7 +7,6 @@ export const authRequired = (req: Request, res: Response, next: NextFunction) =>
     // console.log(req.headers.authorization);
         const  token: any  = req.headers.authorization?.split('Bearer ');
         const authChain = token[1];
-        console.log("ola");
         
         
         if (!authChain)
@@ -24,7 +23,7 @@ export const authRequired = (req: Request, res: Response, next: NextFunction) =>
              .json([{ message: "Code 403: No autorizado" }]);
              
             }
-           //console.log(user);
+          //  console.log(user);
            req.user = user;
            next();
         });
