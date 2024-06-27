@@ -114,32 +114,44 @@ export const getTransactionsByBalance = async (req: Request, res: Response) => {
 
     return res.status(200).json(transacciones);
   } catch (error: any) {
-    return res
+    return res.status(500).json({
+      message: "Error al obtener las transacciones",
+      error: error.message,
+    });
+  }
+};
+
+export const deleteBalance = async (req: Request, res: Response) => {
+  console.log(req.user);
+  const { email } = req.user;
+  const { id } = req.params;
+
+  try {
+    //Verificar
+    const UserId = await getUserId(email);
+    if (!UserId)
+      return res
+        .status(500)
+        .json({ error: "Internal Server Error, cannot find user" });
+
+    // Busca el balance por su ID en la base de datos
+    const balance = await Balance.findByPk(id);
+    // Si el balance no se encuentra, devuelve un mensaje de error
+    if (!balance) {
+      res.status(404).json({ message: "balance no encontrado" });
+      return;
+    }
+    // Elimina el balance de la base de datos
+    await balance.destroy();
+    // Retorna un mensaje indicando que el balance ha sido eliminado
+    res.json({ message: "balance eliminado correctamente" });
+  } catch (error: any) {
+    // Si hay un error, devuelve un mensaje de error
+    res
       .status(500)
       .json({
-        message: "Error al obtener las transacciones",
+        message: "Error al eliminar el balance",
         error: error.message,
       });
   }
 };
-
-
-// export const deleteBalance = async (req: Request, res: Response) => {
-//     const{id}= req.params;
-//     try {
-//         // Busca la transaccion por su ID en la base de datos
-//         const transaccion = await Transaccion.findByPk(id);
-//         // Si la transaccion no se encuentra, devuelve un mensaje de error
-//         if (!transaccion) {
-//             res.status(404).json({ message: 'Transaccion no encontrada' });
-//             return;
-//         }
-//         // Elimina la transaccion de la base de datos
-//         await transaccion.destroy();
-//         // Retorna un mensaje indicando que la transaccion ha sido eliminado
-//         res.json({ message: 'Transaccion eliminada correctamente' });
-//     } catch (error: any) {
-//         // Si hay un error, devuelve un mensaje de error
-//         res.status(500).json({ message: 'Error al eliminar la transaccion', error: error.message });
-//     }
-// };
