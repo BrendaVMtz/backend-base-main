@@ -3,6 +3,7 @@ import cors from "cors";
 import usersRouter from "./routes/usuarios.routes";
 import authRoutes from './routes/auth.routes'
 import transactionRoutes from './routes/transacciones.routes'
+import balanceRoutes from './routes/balances.routes'
 import accountRoutes from './routes/account.routes' 
 import dbConnection from "./database/connect";
 import morgan from "morgan";
@@ -14,7 +15,10 @@ app.use(morgan('dev'));
 
 app.use(express.json());  // la comunicacion entre servidor y cliente es con JSON
 app.use(cookieParser()); //extraer cookies de la peticion
-app.use(cors()); // las referencias cruzadas
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+})); // las referencias cruzadas
 
 
 //const PORT = 3000;
@@ -29,6 +33,8 @@ app.use(cors()); // las referencias cruzadas
     
     // Routes
     app.use("/api/auth", authRoutes);
+
+    app.use("/api/balances", balanceRoutes);
     app.use("/api/transactions", transactionRoutes);
     app.use("/api/accounts", accountRoutes);
     app.use('/api/test', usersRouter); // el enrutamiento que van a tener tus peticiones

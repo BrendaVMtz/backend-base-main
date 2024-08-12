@@ -18,8 +18,7 @@ export const Usuario = db.define('usuario',{
     }
     ,
     estado:{
-        type:DataTypes.BOOLEAN,
-        allowNull: false 
+        type:DataTypes.BOOLEAN
     }
 },
 {

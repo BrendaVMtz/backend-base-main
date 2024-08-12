@@ -1,35 +1,24 @@
 import Router from "express";
 import {
-  getTransaction,
   createTransaction,
-  getTransactions,
-  updateTransaction,
-  deleteTransaction
+  deleteTransaction,
+  getTransaction,
+  updateTransaction
 } from "../controllers/transacciones.controller";
-// import {
-//   getAccounts,
-//   getAccount
-// } from "../controllers/cuentas.controller";
 import { authRequired } from "../middlewares/validateToken";
 
 const router = Router();
-//////////Transacciones
-//Get transactions
-router.get("/", authRequired, getTransactions);
-router.get("/:id", authRequired, getTransaction);
 
-//Create 
-router.post("/", authRequired, createTransaction);
+///CREATE
+router.post('/crear-transaccion',authRequired,createTransaction);
+///READ
+router.get('/leer-transaccion/:id',authRequired,getTransaction);
+// router.get('/calcular-balance');
 
-//Update
-router.put("/:id", authRequired, updateTransaction);
-
-router.delete("/:id", authRequired, deleteTransaction);
-
-// /////////Cuentas
-// router.get("/cuentas/",authRequired, getAccounts);
-
-// router.get("/cuentas/:id", authRequired, getAccount);
+// ////UPDATE
+router.put('/actualizar-transaccion/:id',authRequired,updateTransaction);
+// ////BORRAR
+router.delete('/borrar-transaccion/:id',authRequired,deleteTransaction);
 
 
 export default router;

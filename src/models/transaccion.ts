@@ -1,27 +1,30 @@
 import { DataTypes } from "sequelize";
 import db from '../database/connect';
 import {Usuario} from './usuario';
+import { Balance } from "./balance";
+import { Cuenta } from "./cuenta";
 
 export const Transaccion = db.define('transacciones',{
-
-    usuario_id:{
+    balance_id: {
         type:DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: Usuario // Referencia al modelo User
+            model: Balance // Referencia al modelo User
         }
-    },
-    balance_fecha: {
-        type:DataTypes.DATEONLY,
-        allowNull: false
     },
     id_cuenta_debe:{
         type:DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Cuenta
+        }
     },
     id_cuenta_haber:{
         type:DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Cuenta
+        }
     }
     ,
     cantidad:{
@@ -43,7 +46,7 @@ export const Transaccion = db.define('transacciones',{
 }
 );
 
-Transaccion.belongsTo(Usuario, {foreignKey:'usuario_id'});
+Transaccion.belongsTo(Balance, {foreignKey:'balance_id'});
 
 
 
